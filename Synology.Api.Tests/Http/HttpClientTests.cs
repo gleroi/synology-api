@@ -13,9 +13,12 @@ namespace Synology.Api.Tests.Http
         [Fact]
         public async void HttpGet_ShouldWork()
         {
-            var http = new HttpClient();
+            var http = new HttpGateway();
 
-            var result = await http.Get("http://www.google.fr");
+            var result = await http.Get(SynoConfig.WebApiInfo);
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
     }
 }
