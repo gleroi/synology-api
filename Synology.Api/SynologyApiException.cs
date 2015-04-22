@@ -7,9 +7,9 @@ namespace Synology.Api
 {
     class SynologyApiException : Exception
     {
-        public IError Error { get; private set; }
+        public Error Error { get; private set; }
 
-        public SynologyApiException(string message, IError error)
+        public SynologyApiException(string message, Error error)
             : base(message)
         {
             this.Error = error;

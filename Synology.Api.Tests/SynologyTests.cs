@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Synology.Api.Http;
 using Xunit;
@@ -44,10 +46,19 @@ namespace Synology.Api.Tests
             Assert.Null(result.Error);
         }
 
-        //[Fact]
-        //public async void CallingApi_ShouldFindCgiPath()
-        //{
+        [Fact]
+        public async void CallingApi_ShouldFindCgiPath()
+        {
+            var result = await syno.SendRequest("SYNO.API.Auth", "login", new Dictionary<string, string>
+            {
+                { "account", "tmp" },
+                { "passwd", "tmp" },
+            });
 
-        //}
+            Assert.NotNull(result);
+            Assert.False(result.Success);
+            Assert.Equal(402, result.Error.Code);
+            Assert.Null(result.Data);
+        }
     }
 }

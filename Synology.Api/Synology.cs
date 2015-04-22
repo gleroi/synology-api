@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Synology.Api.Http;
 
 namespace Synology.Api
@@ -12,17 +13,28 @@ namespace Synology.Api
     {
         readonly HttpGateway Http;
 
-        IEnumerable<ApiDescriptor> ApiDescription { get; set; }
+        Dictionary<string, ApiDescriptor> ApiDescription { get; set; }
 
         public Synology(HttpGateway http)
         {
             this.Http = http;
-            Init();
+            Initialize();
         }
 
-        private async void Init()
+        private void Initialize()
         {
-            this.ApiDescription = await this.QueryInfo("all");
+            var task = this.QueryInfo("all");
+            task.Wait();
+            this.ApiDescription = task.Result.ToDictionary(desc => desc.ApiName);
+        }
+
+        private JsonSerializerSettings JsonSettings()
+        {
+            //var settings = new JsonSerializerSettings();
+            //var resolver = new DefaultContractResolver();
+            //resolver.DefaultMembersSearchFlags = DefaultMemberSearchFlags | BindingFlags.Public
+            //settings.ContractResolver
+            throw new NotImplementedException();
         }
 
         private string MakeApiUrl(string apiPath, string query)
@@ -35,15 +47,32 @@ namespace Synology.Api
 
         public async Task<IResponse> SendRequest(string api, string method, IDictionary<string, string> parameters)
         {
-            var apiCall = "api=" + api + "&method=" + method + "&version=1";
-            var queryParams = String.Join("\\", parameters
+            var apiCall = "api=" + api + "&method=" + method;
+            var queryParams = String.Join("&", parameters
                 .Select(EscapeCharacter)
                 .Select(pair => pair.Key + "=" + pair.Value));
 
-            var url = this.MakeApiUrl("query.cgi", apiCall + "&" + queryParams);
-            var json = await this.Http.Get(url);
-            var result = JsonConvert.DeserializeObject<Response>(json);
-            return result;
+            string url = null;
+            if (this.ApiDescription == null && api == "SYNO.API.Info")
+            {
+                url = this.MakeApiUrl("query.cgi", apiCall +  "&version=1" + "&" + queryParams);
+            }
+
+            ApiDescriptor apiDesc = null;
+            if (this.ApiDescription != null && this.ApiDescription.TryGetValue(api, out apiDesc))
+            {
+                url = this.MakeApiUrl(apiDesc.CgiPath, apiCall + "&version=" + apiDesc.MaxVersion + "&" + queryParams);
+            }
+
+            if (url != null)
+            {
+                var json = await this.Http.Get(url);
+                var result = JsonConvert.DeserializeObject<Response>(json, new JsonSerializerSettings() {
+                    
+                });
+                return result;
+            }
+            throw new ArgumentException(api + " is an unknown api", "api");
         }
 
         private KeyValuePair<string, string> EscapeCharacter(KeyValuePair<string, string> arg)

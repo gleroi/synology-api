@@ -11,6 +11,6 @@ namespace Synology.Api
     {
         public bool Success { get; set; }
         public IDictionary<string, JToken> Data { get; set; }
-        public IError Error { get; set; }
+        public Error Error { get; set; }
     }
 }

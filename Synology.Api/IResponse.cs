@@ -6,7 +6,7 @@ namespace Synology.Api
     public interface IResponse
     {
         IDictionary<string, JToken> Data { get; }
-        IError Error { get; }
+        Error Error { get; }
         bool Success { get; }
     }
 }
