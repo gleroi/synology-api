@@ -47,6 +47,12 @@ namespace Synology.Api.Tests
         }
 
         [Fact]
+        public async void CallApiInfo_WithMultiValueParameter_ShouldReturnAResponse()
+        {
+            var result = await syno.SendRequest("SYNO.API.Info", "query", new Parameter("query", "SYNO.API.Info", "SYNO.API.Auth"));
+        }
+
+        [Fact]
         public async void CallingApi_ShouldFindCgiPath()
         {
             var result = await syno.SendRequest("SYNO.API.Auth", "login", new Dictionary<string, string>

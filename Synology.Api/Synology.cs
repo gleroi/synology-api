@@ -17,6 +17,8 @@ namespace Synology.Api
 
         public Synology(HttpGateway http)
         {
+            JsonConvert.DefaultSettings = Settings;
+
             this.Http = http;
             Initialize();
         }
@@ -28,13 +30,12 @@ namespace Synology.Api
             this.ApiDescription = task.Result.ToDictionary(desc => desc.ApiName);
         }
 
-        private JsonSerializerSettings JsonSettings()
+        static JsonSerializerSettings Settings()
         {
-            //var settings = new JsonSerializerSettings();
-            //var resolver = new DefaultContractResolver();
-            //resolver.DefaultMembersSearchFlags = DefaultMemberSearchFlags | BindingFlags.Public
-            //settings.ContractResolver
-            throw new NotImplementedException();
+            return new JsonSerializerSettings()
+            {
+                ContractResolver = new PrivateSetterResolver()
+            };
         }
 
         private string MakeApiUrl(string apiPath, string query)
@@ -67,9 +68,7 @@ namespace Synology.Api
             if (url != null)
             {
                 var json = await this.Http.Get(url);
-                var result = JsonConvert.DeserializeObject<Response>(json, new JsonSerializerSettings() {
-                    
-                });
+                var result = JsonConvert.DeserializeObject<Response>(json);
                 return result;
             }
             throw new ArgumentException(api + " is an unknown api", "api");
