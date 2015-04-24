@@ -11,8 +11,17 @@ namespace Synology.Api.Http
     {
         readonly HttpClient http = new HttpClient();
 
-        public async Task<string> Get(string url)
+        private string MakeApiUrl(string apiPath, string query)
         {
+            UriBuilder uri = new UriBuilder("http", "nostromo.myds.me", 5000);
+            uri.Path = "/webapi/" + apiPath;
+            uri.Query = query;
+            return uri.ToString();
+        }
+
+        public async Task<string> Get(string apiPath, string query)
+        {
+            var url = this.MakeApiUrl(apiPath, query);
             var response = await this.http.GetAsync(url);
             var content = await response.EnsureSuccessStatusCode()
                 .Content.ReadAsByteArrayAsync();

@@ -15,7 +15,7 @@ namespace Synology.Api.Tests.Http
         {
             var http = new HttpGateway();
 
-            var result = await http.Get(SynoConfig.WebApiInfo);
+            var result = await http.Get("query.cgi", "api=SYNO.API.Info&version=1&method=query&query=all");
 
             Assert.NotNull(result);
             Assert.NotEmpty(result);

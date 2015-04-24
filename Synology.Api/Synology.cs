@@ -38,43 +38,36 @@ namespace Synology.Api
             };
         }
 
-        private string MakeApiUrl(string apiPath, string query)
-        {
-            UriBuilder uri = new UriBuilder("http", "nostromo.myds.me", 5000);
-            uri.Path = "/webapi/" + apiPath;
-            uri.Query = query;
-            return uri.ToString();
-        }
+
 
         public async Task<IResponse> SendRequest(string api, string method, params Parameter[] parameters)
         {
             var apiCall = "api=" + api + "&method=" + method;
             var queryParams = String.Join("&", parameters.Select(p => p.ToUrlParam()));
 
-            string url = null;
+            string apiPath = null;
             if (this.ApiDescription == null && api == "SYNO.API.Info")
             {
-                url = this.MakeApiUrl("query.cgi", apiCall +  "&version=1" + "&" + queryParams);
+                apiPath = "query.cgi";
+                apiCall += "&version=1";
+            }
+            else
+            {
+                ApiDescriptor apiDesc = null;
+                if (this.ApiDescription != null && this.ApiDescription.TryGetValue(api, out apiDesc))
+                {
+                    apiPath = apiDesc.CgiPath;
+                    apiCall += "&version=" + apiDesc.MaxVersion;
+                }
             }
 
-            ApiDescriptor apiDesc = null;
-            if (this.ApiDescription != null && this.ApiDescription.TryGetValue(api, out apiDesc))
+            if (apiPath != null)
             {
-                url = this.MakeApiUrl(apiDesc.CgiPath, apiCall + "&version=" + apiDesc.MaxVersion + "&" + queryParams);
-            }
-
-            if (url != null)
-            {
-                var json = await this.Http.Get(url);
+                var json = await this.Http.Get(apiPath, apiCall + "&" + queryParams);
                 var result = JsonConvert.DeserializeObject<Response>(json);
                 return result;
             }
             throw new ArgumentException(api + " is an unknown api", "api");
-        }
-
-        private KeyValuePair<string, string> EscapeCharacter(KeyValuePair<string, string> arg)
-        {
-            return arg;
         }
 
         public async Task<IEnumerable<ApiDescriptor>> QueryInfo(string query)
