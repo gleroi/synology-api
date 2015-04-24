@@ -46,12 +46,10 @@ namespace Synology.Api
             return uri.ToString();
         }
 
-        public async Task<IResponse> SendRequest(string api, string method, IDictionary<string, string> parameters)
+        public async Task<IResponse> SendRequest(string api, string method, params Parameter[] parameters)
         {
             var apiCall = "api=" + api + "&method=" + method;
-            var queryParams = String.Join("&", parameters
-                .Select(EscapeCharacter)
-                .Select(pair => pair.Key + "=" + pair.Value));
+            var queryParams = String.Join("&", parameters.Select(p => p.ToUrlParam()));
 
             string url = null;
             if (this.ApiDescription == null && api == "SYNO.API.Info")
@@ -81,9 +79,7 @@ namespace Synology.Api
 
         public async Task<IEnumerable<ApiDescriptor>> QueryInfo(string query)
         {
-            var response = await this.SendRequest("SYNO.API.Info", "query", new Dictionary<string, string> {
-                { "query", query }
-            });
+            var response = await this.SendRequest("SYNO.API.Info", "query", new Parameter("query", query));
 
             if (response.Success)
             {
