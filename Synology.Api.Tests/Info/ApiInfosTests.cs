@@ -14,7 +14,7 @@ namespace Synology.Api.Tests.Info
 
         public ApiInfosTests()
         {
-            this.syno = new Synology(new HttpGateway());
+            this.syno = new Synology(TestConfig.HttpGateway());
         }
 
         [Fact]

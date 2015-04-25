@@ -12,11 +12,11 @@ namespace Synology.Api
 {
     public class Synology
     {
-        readonly HttpGateway Http;
+        readonly IHttpGateway Http;
 
         Dictionary<string, ApiDescriptor> ApiDescription { get; set; }
 
-        public Synology(HttpGateway http)
+        public Synology(IHttpGateway http)
         {
             JsonConvert.DefaultSettings = Settings;
 

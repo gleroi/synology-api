@@ -13,7 +13,7 @@ namespace Synology.Api.Tests.Http
         [Fact]
         public async void HttpGet_ShouldWork()
         {
-            var http = new HttpGateway();
+            var http = TestConfig.HttpGateway();
 
             var result = await http.Get("query.cgi", "api=SYNO.API.Info&version=1&method=query&query=all");
 

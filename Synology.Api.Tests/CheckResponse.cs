@@ -10,7 +10,7 @@ namespace Synology.Api.Tests
     public static class CheckResponse
     {
         /// <summary>
-        /// A succes response is:
+        /// A success response is:
         /// * is not null
         /// * has its Success property to true
         /// * has its Error property to Null

@@ -39,6 +39,7 @@
     <Compile Include="Error.cs" />
     <Compile Include="Http\HttpGateway.cs" />
     <Compile Include="Http\IHttpClient.cs" />
+    <Compile Include="Http\IHttpGateway.cs" />
     <Compile Include="IResponse.cs" />
     <Compile Include="IResponseStatus.cs" />
     <Compile Include="Parameter.cs" />

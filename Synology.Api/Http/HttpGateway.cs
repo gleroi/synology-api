@@ -7,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace Synology.Api.Http
 {
-    public class HttpGateway
+    internal class HttpGateway : IHttpGateway
     {
+        readonly string Scheme;
+        readonly string Host;
+        readonly int Port;
+
+        public HttpGateway(string scheme, string host, int port)
+        {
+            this.Scheme = scheme;
+            this.Host = host;
+            this.Port = port;
+        }
+
         readonly HttpClient http = new HttpClient();
 
         private string MakeApiUrl(string apiPath, string query)
         {
-            UriBuilder uri = new UriBuilder("http", "nostromo.myds.me", 5000);
+            UriBuilder uri = new UriBuilder(this.Scheme, this.Host, this.Port);
             uri.Path = "/webapi/" + apiPath;
             uri.Query = query;
             return uri.ToString();

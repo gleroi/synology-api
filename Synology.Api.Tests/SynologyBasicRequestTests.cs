@@ -16,7 +16,7 @@ namespace Synology.Api.Tests
 
         public SynologyBasicRequestTests()
         {
-            this.syno = new Synology(new HttpGateway());
+            this.syno = new Synology(TestConfig.HttpGateway());
         }
 
         [Fact]
