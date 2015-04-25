@@ -12,6 +12,11 @@ namespace Synology.Api.Tests.Auth
     {
         readonly Synology syno;
 
+        const string account = "";
+        const string password = "";
+        const string session = "FileStation";
+
+
         public ApiAuthTests()
         {
             this.syno = new Synology(new HttpGateway());
@@ -20,7 +25,7 @@ namespace Synology.Api.Tests.Auth
         [Fact]
         public async void WhenLoginWithValidCredentials_Sid_ShouldGetSuccessAndSid()
         {
-            var response = await syno.Login("", "", "", "sid");
+            var response = await syno.Login(account, password, session, "sid");
 
             CheckResponse.HasSucceeded(response);
             Assert.NotEmpty(response.Sid);
@@ -29,7 +34,7 @@ namespace Synology.Api.Tests.Auth
         [Fact]
         public async void WhenLoginWithValidCredentials_Cookie_ShouldGetSuccessAndCookie()
         {
-            var response = await syno.Login("", "", "");
+            var response = await syno.Login(account, password, session);
 
             CheckResponse.HasSucceeded(response);
             Assert.Null(response.Sid);
