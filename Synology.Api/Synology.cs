@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Synology.Api.Http;
 
@@ -37,8 +38,6 @@ namespace Synology.Api
                 ContractResolver = new PrivateSetterResolver()
             };
         }
-
-
 
         public async Task<IResponse> SendRequest(string api, string method, params Parameter[] parameters)
         {
@@ -79,6 +78,26 @@ namespace Synology.Api
                 return response.Data.Select(ApiDescriptor.MapFromDynamic);
             }
             throw new SynologyApiException("Call to SINO.Api.Info failed", response.Error);
+        }
+
+        public async Task<AuthResponse> Login(string account, string password, string session, string format = "cookie")
+        {
+            var response = await this.SendRequest("SYNO.API.Auth", "login",
+                new Parameter("account", account),
+                new Parameter("passwd", password),
+                new Parameter("session", session),
+                new Parameter("format", format));
+
+            string sid = null;
+            if (response.Success && format == "sid" && response.Data != null) 
+            {
+                JToken token = null;
+                if (response.Data.TryGetValue("sid", out token)) 
+                {
+                    sid = token.Value<string>();
+                }
+            }
+            return new AuthResponse(response.Success, sid, response.Error);
         }
     }
 }

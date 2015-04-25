@@ -10,11 +10,11 @@ using Xunit;
 
 namespace Synology.Api.Tests
 {
-    public class SynologyTests
+    public class SynologyBasicRequestTests
     {
         readonly Synology syno;
 
-        public SynologyTests()
+        public SynologyBasicRequestTests()
         {
             this.syno = new Synology(new HttpGateway());
         }
@@ -29,7 +29,7 @@ namespace Synology.Api.Tests
         public async void CallingApiInfo_ShouldSucceed()
         {
             var result = await syno.SendRequest("SYNO.API.Info", "query", new Parameter("query", "all"));
-            Assert.NotNull(result);
+            CheckResponse.HasSucceeded(result);
         }
 
         [Fact]
@@ -49,6 +49,12 @@ namespace Synology.Api.Tests
         {
             var result = await syno.SendRequest("SYNO.API.Info", "query", 
                 new Parameter("query", "SYNO.API.Info", "SYNO.API.Auth"));
+
+            CheckResponse.HasSucceeded(result);
+            Assert.NotNull(result.Data);
+            Assert.Equal(2, result.Data.Count);
+            Assert.Contains("SYNO.API.Info", result.Data.Keys);
+            Assert.Contains("SYNO.API.Auth", result.Data.Keys);
         }
 
         [Fact]

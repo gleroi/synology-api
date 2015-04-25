@@ -56,10 +56,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\ApiAuthTests.cs" />
+    <Compile Include="CheckResponse.cs" />
     <Compile Include="Http\HttpClientTests.cs" />
     <Compile Include="Info\ApiInfosTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SynologyTests.cs" />
+    <Compile Include="SynologyBasicRequestTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

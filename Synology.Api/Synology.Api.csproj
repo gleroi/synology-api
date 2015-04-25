@@ -35,10 +35,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApiDescriptor.cs" />
+    <Compile Include="AuthResponse.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Http\HttpGateway.cs" />
     <Compile Include="Http\IHttpClient.cs" />
     <Compile Include="IResponse.cs" />
+    <Compile Include="IResponseStatus.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="PrivateSetterResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
