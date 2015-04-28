@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5B592FA-A5CF-4F78-881F-433B689E3EF7}</ProjectGuid>
+    <ProjectGuid>{8E5EF799-E87F-410D-9DF3-BC4C855C7D79}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Synology.Api</RootNamespace>
-    <AssemblyName>Synology.Api</AssemblyName>
+    <RootNamespace>Synology.Api.Download</RootNamespace>
+    <AssemblyName>Synology.Api.DownloadStation</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,22 +34,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ApiDescriptor.cs" />
-    <Compile Include="AuthResponse.cs" />
-    <Compile Include="Error.cs" />
-    <Compile Include="Files\IFileGateway.cs" />
-    <Compile Include="Http\HttpGateway.cs" />
-    <Compile Include="Http\IHttpClient.cs" />
-    <Compile Include="Http\IHttpGateway.cs" />
-    <Compile Include="IResponse.cs" />
-    <Compile Include="IResponseStatus.cs" />
-    <Compile Include="Parameter.cs" />
-    <Compile Include="PrivateSetterResolver.cs" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\Synology.Api\Synology.Api.csproj">
+      <Project>{c5b592fa-a5cf-4f78-881f-433b689e3ef7}</Project>
+      <Name>Synology.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DownloadStation.cs" />
+    <Compile Include="DsTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Response.cs" />
-    <Compile Include="Sid.cs" />
-    <Compile Include="Synology.cs" />
-    <Compile Include="SynologyApiException.cs" />
+    <Compile Include="TaskList.cs" />
+    <Compile Include="TaskListResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

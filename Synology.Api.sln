@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synology.Api", "Synology.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synology.Api.Tests", "Synology.Api.Tests\Synology.Api.Tests.csproj", "{A71322D7-0512-4C90-857B-1CA208AC3C11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synology.Api.Download", "Synology.Api.DownloadStation\Synology.Api.Download.csproj", "{8E5EF799-E87F-410D-9DF3-BC4C855C7D79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synology.Net45", "Synology.Net45\Synology.Net45.csproj", "{6E2F89A2-C782-4586-AE71-9E994D8116A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{A71322D7-0512-4C90-857B-1CA208AC3C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A71322D7-0512-4C90-857B-1CA208AC3C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A71322D7-0512-4C90-857B-1CA208AC3C11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E5EF799-E87F-410D-9DF3-BC4C855C7D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5EF799-E87F-410D-9DF3-BC4C855C7D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5EF799-E87F-410D-9DF3-BC4C855C7D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5EF799-E87F-410D-9DF3-BC4C855C7D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2F89A2-C782-4586-AE71-9E994D8116A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2F89A2-C782-4586-AE71-9E994D8116A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2F89A2-C782-4586-AE71-9E994D8116A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2F89A2-C782-4586-AE71-9E994D8116A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -42,7 +42,7 @@ namespace Synology.Api
         public async Task<IResponse> SendRequest(string api, string method, params Parameter[] parameters)
         {
             var apiCall = "api=" + api + "&method=" + method;
-            var queryParams = String.Join("&", parameters.Select(p => p.ToUrlParam()));
+            var queryParams = Parameter.Join("&", parameters);
 
             string apiPath = null;
             if (this.ApiDescription == null && api == "SYNO.API.Info")

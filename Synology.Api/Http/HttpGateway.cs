@@ -38,5 +38,12 @@ namespace Synology.Api.Http
                 .Content.ReadAsByteArrayAsync();
             return Encoding.UTF8.GetString(content, 0, content.Length);
         }
+
+        public async Task<string> PostFile(string apiPath, string query, string filepath)
+        {
+            var url = this.MakeApiUrl(apiPath, query);
+            var form = new MultipartFormDataContent();
+            return "plop";
+        }
     }
 }

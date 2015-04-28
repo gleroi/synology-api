@@ -11,7 +11,7 @@ namespace Synology.Api.Tests
     {
         internal static IHttpGateway HttpGateway()
         {
-            return new HttpGateway("http", "192.168.0.16", 5000);
+            return new HttpGateway("http", "", 5000);
         }
 
         public static string Account = "";

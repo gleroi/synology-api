@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Auth\ApiAuthTests.cs" />
     <Compile Include="CheckResponse.cs" />
+    <Compile Include="Download\TaskCreateTests.cs" />
+    <Compile Include="Download\TaskListTests.cs" />
     <Compile Include="Http\HttpClientTests.cs" />
     <Compile Include="Info\ApiInfosTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +70,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Synology.Api.DownloadStation\Synology.Api.Download.csproj">
+      <Project>{8e5ef799-e87f-410d-9df3-bc4c855c7d79}</Project>
+      <Name>Synology.Api.Download</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Synology.Api\Synology.Api.csproj">
       <Project>{c5b592fa-a5cf-4f78-881f-433b689e3ef7}</Project>
       <Name>Synology.Api</Name>

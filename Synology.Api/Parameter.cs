@@ -9,18 +9,30 @@ namespace Synology.Api
     public struct Parameter
     {
         public string Key { get; private set; }
-        public IEnumerable<string> Values { get; private set; }
+        public IEnumerable<object> Values { get; private set; }
 
-        public Parameter(string key, params string[] values)
+        public Parameter(string key, params object[] values)
             : this()
         {
             this.Key = key;
-            this.Values = new List<string>(values);
+            this.Values = new List<object>(values);
         }
 
         internal string ToUrlParam()
         {
-            return this.Key + "=" + String.Join(",", this.Values);
+            if (this.Values != null & this.Values.Any())
+            {
+                return this.Key + "=" + String.Join(",", this.Values);
+            }
+            return String.Empty;
+        }
+
+        internal static object Join(string separator, IEnumerable<Parameter> parameters)
+        {
+            var strs = parameters.Select(p => p.ToUrlParam())
+                .Where(str => !String.IsNullOrEmpty(str));
+
+            return String.Join(separator, strs);
         }
     }
 }
