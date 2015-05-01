@@ -13,6 +13,10 @@ namespace Synology.Api
         public Sid(string value)
             : this()
         {
+            if (String.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("value", "value cannot be null or empty");
+            }
             this.Value = value;
         }
     }

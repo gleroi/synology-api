@@ -23,9 +23,9 @@ namespace Synology.Api.Tests.Download
 
             CheckResponse.HasSucceeded(auth);
             var sid = auth.Sid;
-            Assert.NotEmpty(sid);
+            Assert.NotNull(sid);
 
-            var tasks = await station.ListTasks(sid);
+            var tasks = await station.ListTasks(sid.Value);
             CheckResponse.HasSucceeded(tasks);
             Assert.NotNull(tasks.Data);
             Assert.NotEmpty(tasks.Data.Tasks);

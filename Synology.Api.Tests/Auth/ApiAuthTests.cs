@@ -25,7 +25,7 @@ namespace Synology.Api.Tests.Auth
             var response = await syno.Login(TestConfig.Account, TestConfig.Password, session, "sid");
 
             CheckResponse.HasSucceeded(response);
-            Assert.NotEmpty(response.Sid);
+            Assert.NotNull(response.Sid);
         }
 
         [Fact]

@@ -88,13 +88,13 @@ namespace Synology.Api
                 new Parameter("session", session),
                 new Parameter("format", format));
 
-            string sid = null;
+            Sid? sid = null;
             if (response.Success && format == "sid" && response.Data != null) 
             {
                 JToken token = null;
                 if (response.Data.TryGetValue("sid", out token)) 
                 {
-                    sid = token.Value<string>();
+                    sid = new Sid(token.Value<string>());
                 }
             }
             return new AuthResponse(response.Success, sid, response.Error);

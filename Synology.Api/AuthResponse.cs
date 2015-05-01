@@ -9,9 +9,9 @@ namespace Synology.Api
     {
         public Error Error { get; private set; }
         public bool Success { get; private set; }
-        public string Sid { get; private set; }
+        public Sid? Sid { get; private set; }
 
-        public AuthResponse(bool success, string sid, Error error)
+        public AuthResponse(bool success, Sid? sid, Error error)
         {
             this.Success = success;
             this.Error = error;

@@ -16,24 +16,24 @@ namespace Synology.Api.Download
         {
         }
 
-        public async Task<TaskListResponse> ListTasks(string sid, int offset = 0, int limit = -1, params string[] additionals)
+        public async Task<TaskListResponse> ListTasks(Sid sid, int offset = 0, int limit = -1, params string[] additionals)
         {
             var result = await this.SendRequest("SYNO.DownloadStation.Task", "list",
                 new Parameter("offset", offset),
                 new Parameter("limit", limit),
-                new Parameter("_sid", sid),
+                new Parameter("_sid", sid.Value),
                 new Parameter("additional", additionals));
 
             var response = new TaskListResponse(result.Success, result.Data, result.Error);
             return response;
         }
 
-        public async Task<IResponse> CreateTaskUri(string sid, string uri, string destination)
+        public async Task<IResponse> CreateTaskUri(Sid sid, string uri, string destination)
         {
             var result = await this.SendRequest("SYNO.DownloadStation.Task", "create",
                 new Parameter("uri", uri),
                 new Parameter("destination", destination),
-                new Parameter("_sid", sid));
+                new Parameter("_sid", sid.Value));
 
             return result;
         }

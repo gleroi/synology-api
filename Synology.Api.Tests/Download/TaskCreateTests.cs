@@ -24,9 +24,9 @@ namespace Synology.Api.Tests.Download
 
             CheckResponse.HasSucceeded(auth);
             var sid = auth.Sid;
-            Assert.NotEmpty(sid);
+            Assert.NotNull(sid);
 
-            var added = await station.CreateTaskUri(sid, "http://www.omgtorrent.com/clic_dl.php?id=23642", "telechargements");
+            var added = await station.CreateTaskUri(sid.Value, "http://www.omgtorrent.com/clic_dl.php?id=23642", "telechargements");
             CheckResponse.HasSucceeded(added);
         }
 
@@ -37,9 +37,9 @@ namespace Synology.Api.Tests.Download
 
             CheckResponse.HasSucceeded(auth);
             var sid = auth.Sid;
-            Assert.NotEmpty(sid);
+            Assert.NotNull(sid);
 
-            var added = await station.CreateTaskUri(sid, "http://www.omgtorrent.com/clic_dl.php?id=23642", "telechargements");
+            var added = await station.CreateTaskUri(sid.Value, "http://www.omgtorrent.com/clic_dl.php?id=23642", "telechargements");
             CheckResponse.HasSucceeded(added);
         }
     }
