@@ -38,9 +38,13 @@ namespace Synology.Api.Download
             return result;
         }
 
-        public async Task<IResponse> CreateTaskFile(string sid, string filepath, string destination)
+        public async Task<IResponse> CreateTaskFile(Sid sid, string filepath, string destination)
         {
-            return null;
+            var result = await this.PostRequest("SYNO.DownloadStation.Task", "create",
+                new Parameter("destination", destination),
+                new Parameter("_sid", sid.Value),
+                new Parameter("file", filepath));
+            return result;
         }
 
     }

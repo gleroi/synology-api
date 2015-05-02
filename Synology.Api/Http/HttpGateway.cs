@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Synology.Api.Files;
 
 namespace Synology.Api.Http
 {
@@ -13,14 +14,17 @@ namespace Synology.Api.Http
         readonly string Host;
         readonly int Port;
 
-        public HttpGateway(string scheme, string host, int port)
+        public HttpGateway(IFileGateway fileGateway,
+            string scheme, string host, int port)
         {
+            this.filesGateway = fileGateway;
             this.Scheme = scheme;
             this.Host = host;
             this.Port = port;
         }
 
         readonly HttpClient http = new HttpClient();
+        readonly IFileGateway filesGateway;
 
         private string MakeApiUrl(string apiPath, string query)
         {
@@ -43,7 +47,13 @@ namespace Synology.Api.Http
         {
             var url = this.MakeApiUrl(apiPath, query);
             var form = new MultipartFormDataContent();
-            return "plop";
+            var stream = this.filesGateway.GetReadStream(filepath);
+            var file = new StreamContent(stream);
+            form.Add(file, "file");
+            var response = await this.http.PostAsync(url, form);
+            var content = await response.EnsureSuccessStatusCode()
+                .Content.ReadAsByteArrayAsync();
+            return Encoding.UTF8.GetString(content, 0, content.Length);
         }
     }
 }

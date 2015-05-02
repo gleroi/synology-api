@@ -41,10 +41,22 @@ namespace Synology.Api
 
         public async Task<IResponse> SendRequest(string api, string method, params Parameter[] parameters)
         {
-            var apiCall = "api=" + api + "&method=" + method;
-            var queryParams = Parameter.Join("&", parameters);
+            string apiCall;
+            string queryParams;
+            string apiPath;
 
-            string apiPath = null;
+            BuildApiUrl(api, method, parameters, out apiCall, out queryParams, out apiPath);
+
+            var json = await this.Http.Get(apiPath, apiCall + "&" + queryParams);
+            var result = JsonConvert.DeserializeObject<Response>(json);
+            return result;
+        }
+
+        private void BuildApiUrl(string api, string method, Parameter[] parameters, out string apiPath, out string apiCall, out string queryParams)
+        {
+            apiCall = "api=" + api + "&method=" + method;
+            queryParams = Parameter.Join("&", parameters);
+
             if (this.ApiDescription == null && api == "SYNO.API.Info")
             {
                 apiPath = "query.cgi";
@@ -59,14 +71,12 @@ namespace Synology.Api
                     apiCall += "&version=" + apiDesc.MaxVersion;
                 }
             }
-
-            if (apiPath != null)
-            {
-                var json = await this.Http.Get(apiPath, apiCall + "&" + queryParams);
-                var result = JsonConvert.DeserializeObject<Response>(json);
-                return result;
-            }
             throw new ArgumentException(api + " is an unknown api", "api");
+        }
+
+        protected Task<IResponse> PostRequest(string api, string method, params Parameter[] parameters)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<ApiDescriptor>> QueryInfo(string query)

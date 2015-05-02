@@ -78,6 +78,10 @@
       <Project>{c5b592fa-a5cf-4f78-881f-433b689e3ef7}</Project>
       <Name>Synology.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Synology.Net45\Synology.Net45.csproj">
+      <Project>{6e2f89a2-c782-4586-ae71-9e994d8116a3}</Project>
+      <Name>Synology.Net45</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

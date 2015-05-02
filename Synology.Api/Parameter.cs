@@ -27,7 +27,7 @@ namespace Synology.Api
             return String.Empty;
         }
 
-        internal static object Join(string separator, IEnumerable<Parameter> parameters)
+        internal static string Join(string separator, IEnumerable<Parameter> parameters)
         {
             var strs = parameters.Select(p => p.ToUrlParam())
                 .Where(str => !String.IsNullOrEmpty(str));
