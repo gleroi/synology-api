@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -45,12 +46,25 @@ namespace Synology.Api.Http
 
         public async Task<string> PostFile(string apiPath, string query, string filepath)
         {
+            HttpResponseMessage response = null;
             var url = this.MakeApiUrl(apiPath, query);
-            var form = new MultipartFormDataContent();
-            var stream = this.filesGateway.GetReadStream(filepath);
-            var file = new StreamContent(stream);
-            form.Add(file, "file");
-            var response = await this.http.PostAsync(url, form);
+            if (!String.IsNullOrEmpty(filepath))
+            {
+                var form = new MultipartFormDataContent();
+                var stream = this.filesGateway.GetReadStream(filepath);
+                var file = new StreamContent(stream);
+                file.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = Path.GetFileName(filepath),
+                    Name = "file",
+                };
+                form.Add(file);
+                response = await this.http.PostAsync(url, form);
+            }
+            else
+            {
+                response = await this.http.PostAsync(url, null);
+            }
             var content = await response.EnsureSuccessStatusCode()
                 .Content.ReadAsByteArrayAsync();
             return Encoding.UTF8.GetString(content, 0, content.Length);

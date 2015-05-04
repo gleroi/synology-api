@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Synology.Api.Http;
+using Synology.Net45;
 
 namespace Synology.Api.Tests
 {
@@ -11,7 +12,8 @@ namespace Synology.Api.Tests
     {
         internal static IHttpGateway HttpGateway()
         {
-            return new HttpGateway("http", "", 5000);
+            return new HttpGateway(new FileGateway(),
+                "http", "", 5000);
         }
 
         public static string Account = "";

@@ -39,19 +39,6 @@ namespace Synology.Api
             };
         }
 
-        public async Task<IResponse> SendRequest(string api, string method, params Parameter[] parameters)
-        {
-            string apiCall;
-            string queryParams;
-            string apiPath;
-
-            BuildApiUrl(api, method, parameters, out apiCall, out queryParams, out apiPath);
-
-            var json = await this.Http.Get(apiPath, apiCall + "&" + queryParams);
-            var result = JsonConvert.DeserializeObject<Response>(json);
-            return result;
-        }
-
         private void BuildApiUrl(string api, string method, Parameter[] parameters, out string apiPath, out string apiCall, out string queryParams)
         {
             apiCall = "api=" + api + "&method=" + method;
@@ -61,6 +48,7 @@ namespace Synology.Api
             {
                 apiPath = "query.cgi";
                 apiCall += "&version=1";
+                return;
             }
             else
             {
@@ -69,14 +57,40 @@ namespace Synology.Api
                 {
                     apiPath = apiDesc.CgiPath;
                     apiCall += "&version=" + apiDesc.MaxVersion;
+                    return;
                 }
             }
             throw new ArgumentException(api + " is an unknown api", "api");
         }
 
-        protected Task<IResponse> PostRequest(string api, string method, params Parameter[] parameters)
+        public async Task<IResponse> SendRequest(string api, string method, params Parameter[] parameters)
         {
-            throw new NotImplementedException();
+            string apiCall;
+            string queryParams;
+            string apiPath;
+
+            BuildApiUrl(api, method, parameters, out apiPath, out apiCall, out queryParams);
+
+            var json = await this.Http.Get(apiPath, apiCall + "&" + queryParams);
+            var result = JsonConvert.DeserializeObject<Response>(json);
+            return result;
+        }
+
+
+        protected async Task<IResponse> PostRequest(string api, string method, params Parameter[] parameters)
+        {
+            string apiCall;
+            string queryParams;
+            string apiPath;
+
+            Parameter? file = parameters.FirstOrDefault(p => p.Key == "file");
+            var others = parameters.Where(p => p.Key != "file").ToArray();
+
+            BuildApiUrl(api, method, others, out apiPath, out apiCall, out queryParams);
+
+            var json = await this.Http.PostFile(apiPath, apiCall + "&" + queryParams, file.HasValue ? file.Value.ValuesAsString() : null);
+            var result = JsonConvert.DeserializeObject<Response>(json);
+            return result;
         }
 
         public async Task<IEnumerable<ApiDescriptor>> QueryInfo(string query)
@@ -99,10 +113,10 @@ namespace Synology.Api
                 new Parameter("format", format));
 
             Sid? sid = null;
-            if (response.Success && format == "sid" && response.Data != null) 
+            if (response.Success && format == "sid" && response.Data != null)
             {
                 JToken token = null;
-                if (response.Data.TryGetValue("sid", out token)) 
+                if (response.Data.TryGetValue("sid", out token))
                 {
                     sid = new Sid(token.Value<string>());
                 }

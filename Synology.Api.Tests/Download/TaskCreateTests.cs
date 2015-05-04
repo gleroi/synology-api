@@ -39,7 +39,7 @@ namespace Synology.Api.Tests.Download
             var sid = auth.Sid;
             Assert.NotNull(sid);
 
-            var added = await station.CreateTaskUri(sid.Value, "http://www.omgtorrent.com/clic_dl.php?id=23642", "telechargements");
+            var added = await station.CreateTaskFile(sid.Value, "Resources/test.torrent", "telechargements");
             CheckResponse.HasSucceeded(added);
         }
     }

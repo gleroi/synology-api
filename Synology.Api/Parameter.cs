@@ -18,11 +18,16 @@ namespace Synology.Api
             this.Values = new List<object>(values);
         }
 
+        internal string ValuesAsString()
+        {
+            return String.Join(",", this.Values);
+        }
+
         internal string ToUrlParam()
         {
             if (this.Values != null & this.Values.Any())
             {
-                return this.Key + "=" + String.Join(",", this.Values);
+                return this.Key + "=" + this.ValuesAsString();
             }
             return String.Empty;
         }
