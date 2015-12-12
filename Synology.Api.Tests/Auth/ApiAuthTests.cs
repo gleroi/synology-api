@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Synology.Api.Http;
-using Xunit;
+﻿using Xunit;
 
 namespace Synology.Api.Tests.Auth
 {
     public class ApiAuthTests
     {
-        readonly Synology syno;
+        private readonly Synology syno;
 
-        const string session = "FileStation";
+        private const string session = "FileStation";
 
         public ApiAuthTests()
         {
-            this.syno = new Synology(TestConfig.HttpGateway());
+            syno = new Synology(TestConfig.HttpGateway());
         }
 
         [Fact]

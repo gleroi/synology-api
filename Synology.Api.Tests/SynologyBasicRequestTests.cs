@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Synology.Api.Http;
-using Xunit;
+﻿using Xunit;
 
 namespace Synology.Api.Tests
 {
     public class SynologyBasicRequestTests
     {
-        readonly Synology syno;
+        private readonly Synology syno;
 
         public SynologyBasicRequestTests()
         {
-            this.syno = new Synology(TestConfig.HttpGateway());
+            syno = new Synology(TestConfig.HttpGateway());
         }
 
         [Fact]
@@ -47,7 +39,7 @@ namespace Synology.Api.Tests
         [Fact]
         public async void CallApiInfo_WithMultiValueParameter_ShouldReturnAResponse()
         {
-            var result = await syno.SendRequest("SYNO.API.Info", "query", 
+            var result = await syno.SendRequest("SYNO.API.Info", "query",
                 new Parameter("query", "SYNO.API.Info", "SYNO.API.Auth"));
 
             CheckResponse.HasSucceeded(result);
@@ -60,9 +52,9 @@ namespace Synology.Api.Tests
         [Fact]
         public async void CallingApi_ShouldFindCgiPath()
         {
-            var result = await syno.SendRequest("SYNO.API.Auth", "login", 
+            var result = await syno.SendRequest("SYNO.API.Auth", "login",
                 new Parameter("account", "tmp"),
-                new Parameter( "passwd", "tmp"));
+                new Parameter("passwd", "tmp"));
 
             Assert.NotNull(result);
             Assert.False(result.Success);

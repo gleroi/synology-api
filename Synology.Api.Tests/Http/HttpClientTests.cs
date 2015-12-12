@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Synology.Api.Http;
-using Xunit;
+﻿using Xunit;
 
 namespace Synology.Api.Tests.Http
 {

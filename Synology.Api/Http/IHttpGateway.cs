@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
 namespace Synology.Api.Http
 {
     public interface IHttpGateway

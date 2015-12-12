@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Synology.Api
 {
@@ -14,30 +11,30 @@ namespace Synology.Api
         public Parameter(string key, params object[] values)
             : this()
         {
-            this.Key = key;
-            this.Values = new List<object>(values);
+            Key = key;
+            Values = new List<object>(values);
         }
 
         internal string ValuesAsString()
         {
-            return String.Join(",", this.Values);
+            return string.Join(",", Values);
         }
 
         internal string ToUrlParam()
         {
-            if (this.Values != null & this.Values.Any())
+            if (Values != null & Values.Any())
             {
-                return this.Key + "=" + this.ValuesAsString();
+                return Key + "=" + ValuesAsString();
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         internal static string Join(string separator, IEnumerable<Parameter> parameters)
         {
             var strs = parameters.Select(p => p.ToUrlParam())
-                .Where(str => !String.IsNullOrEmpty(str));
+                .Where(str => !string.IsNullOrEmpty(str));
 
-            return String.Join(separator, strs);
+            return string.Join(separator, strs);
         }
     }
 }

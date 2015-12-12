@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 
 namespace Synology.Api.Tests
 {
@@ -16,7 +11,7 @@ namespace Synology.Api.Tests
         /// * has its Error property to Null
         /// </summary>
         /// <param name="response"></param>
-        public static void HasSucceeded(IResponseStatus response) 
+        public static void HasSucceeded(IResponseStatus response)
         {
             Assert.NotNull(response);
             Assert.True(response.Success);

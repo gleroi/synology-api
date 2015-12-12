@@ -1,64 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using Synology.Api.Http;
 
 namespace Synology.Api
 {
     public class Synology
     {
-        readonly IHttpGateway Http;
+        private readonly IHttpGateway Http;
 
-        Dictionary<string, ApiDescriptor> ApiDescription { get; set; }
+        private Dictionary<string, ApiDescriptor> ApiDescription { get; set; }
 
         public Synology(IHttpGateway http)
         {
             JsonConvert.DefaultSettings = Settings;
 
-            this.Http = http;
+            Http = http;
             Initialize();
         }
 
         private void Initialize()
         {
-            var task = this.QueryInfo("all");
+            var task = QueryInfo("all");
             task.Wait();
-            this.ApiDescription = task.Result.ToDictionary(desc => desc.ApiName);
+            ApiDescription = task.Result.ToDictionary(desc => desc.ApiName);
         }
 
-        static JsonSerializerSettings Settings()
+        private static JsonSerializerSettings Settings()
         {
-            return new JsonSerializerSettings()
+            return new JsonSerializerSettings
             {
                 ContractResolver = new PrivateSetterResolver()
             };
         }
 
-        private void BuildApiUrl(string api, string method, Parameter[] parameters, out string apiPath, out string apiCall, out string queryParams)
+        private void BuildApiUrl(string api, string method, Parameter[] parameters, out string apiPath,
+            out string apiCall, out string queryParams)
         {
             apiCall = "api=" + api + "&method=" + method;
             queryParams = Parameter.Join("&", parameters);
 
-            if (this.ApiDescription == null && api == "SYNO.API.Info")
+            if (ApiDescription == null && api == "SYNO.API.Info")
             {
                 apiPath = "query.cgi";
                 apiCall += "&version=1";
                 return;
             }
-            else
+            ApiDescriptor apiDesc = null;
+            if (ApiDescription != null && ApiDescription.TryGetValue(api, out apiDesc))
             {
-                ApiDescriptor apiDesc = null;
-                if (this.ApiDescription != null && this.ApiDescription.TryGetValue(api, out apiDesc))
-                {
-                    apiPath = apiDesc.CgiPath;
-                    apiCall += "&version=" + apiDesc.MaxVersion;
-                    return;
-                }
+                apiPath = apiDesc.CgiPath;
+                apiCall += "&version=" + apiDesc.MaxVersion;
+                return;
             }
             throw new ArgumentException(api + " is an unknown api", "api");
         }
@@ -71,11 +67,10 @@ namespace Synology.Api
 
             BuildApiUrl(api, method, parameters, out apiPath, out apiCall, out queryParams);
 
-            var json = await this.Http.Get(apiPath, apiCall + "&" + queryParams);
+            var json = await Http.Get(apiPath, apiCall + "&" + queryParams);
             var result = JsonConvert.DeserializeObject<Response>(json);
             return result;
         }
-
 
         protected async Task<IResponse> PostRequest(string api, string method, params Parameter[] parameters)
         {
@@ -88,14 +83,17 @@ namespace Synology.Api
 
             BuildApiUrl(api, method, others, out apiPath, out apiCall, out queryParams);
 
-            var json = await this.Http.PostFile(apiPath, apiCall + "&" + queryParams, file.HasValue ? file.Value.ValuesAsString() : null);
+            var json =
+                await
+                    Http.PostFile(apiPath, apiCall + "&" + queryParams,
+                        file.HasValue ? file.Value.ValuesAsString() : null);
             var result = JsonConvert.DeserializeObject<Response>(json);
             return result;
         }
 
         public async Task<IEnumerable<ApiDescriptor>> QueryInfo(string query)
         {
-            var response = await this.SendRequest("SYNO.API.Info", "query", new Parameter("query", query));
+            var response = await SendRequest("SYNO.API.Info", "query", new Parameter("query", query));
 
             if (response.Success)
             {
@@ -106,7 +104,7 @@ namespace Synology.Api
 
         public async Task<AuthResponse> Login(string account, string password, string session, string format = "cookie")
         {
-            var response = await this.SendRequest("SYNO.API.Auth", "login",
+            var response = await SendRequest("SYNO.API.Auth", "login",
                 new Parameter("account", account),
                 new Parameter("passwd", password),
                 new Parameter("session", session),

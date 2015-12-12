@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Synology.Api.Download;
+﻿using Synology.Api.Download;
 using Xunit;
 
 namespace Synology.Api.Tests.Download
 {
     public class TaskCreateTests
     {
-        readonly DownloadStation station;
+        private readonly DownloadStation station;
 
         public TaskCreateTests()
         {
-            this.station = new DownloadStation(TestConfig.HttpGateway());
+            station = new DownloadStation(TestConfig.HttpGateway());
         }
 
         [Fact]
@@ -26,7 +21,9 @@ namespace Synology.Api.Tests.Download
             var sid = auth.Sid;
             Assert.NotNull(sid);
 
-            var added = await station.CreateTaskUri(sid.Value, "http://www.omgtorrent.com/clic_dl.php?id=23642", "telechargements");
+            var added =
+                await
+                    station.CreateTaskUri(sid.Value, "http://www.omgtorrent.com/clic_dl.php?id=23642", "telechargements");
             CheckResponse.HasSucceeded(added);
         }
 

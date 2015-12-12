@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Synology.Api
+﻿namespace Synology.Api
 {
     public class AuthResponse : IResponseStatus
     {
@@ -13,9 +8,9 @@ namespace Synology.Api
 
         public AuthResponse(bool success, Sid? sid, Error error)
         {
-            this.Success = success;
-            this.Error = error;
-            this.Sid = sid;
+            Success = success;
+            Error = error;
+            Sid = sid;
         }
     }
 }

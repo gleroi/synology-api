@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace Synology.Api.Download
@@ -12,9 +9,9 @@ namespace Synology.Api.Download
 
         internal TaskListResponse(bool success, IDictionary<string, JToken> data, Error error)
         {
-            this.Success = success;
-            this.Error = error;
-            this.Data = TaskList.Create(data);
+            Success = success;
+            Error = error;
+            Data = TaskList.Create(data);
         }
 
         public Error Error { get; private set; }

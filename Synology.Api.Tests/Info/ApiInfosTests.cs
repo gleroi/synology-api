@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Synology.Api.Http;
-using Xunit;
+﻿using Xunit;
 
 namespace Synology.Api.Tests.Info
 {
     public class ApiInfosTests
     {
-        readonly Synology syno;
+        private readonly Synology syno;
 
         public ApiInfosTests()
         {
-            this.syno = new Synology(TestConfig.HttpGateway());
+            syno = new Synology(TestConfig.HttpGateway());
         }
 
         [Fact]
-        public async void CallQueryInfo_ShouldReturnApiDescriptor() 
+        public async void CallQueryInfo_ShouldReturnApiDescriptor()
         {
             var descriptors = await syno.QueryInfo("all");
 

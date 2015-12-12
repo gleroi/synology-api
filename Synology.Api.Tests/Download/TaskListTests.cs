@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Synology.Api.Download;
+﻿using Synology.Api.Download;
 using Xunit;
 
 namespace Synology.Api.Tests.Download
 {
     public class TaskListTests
     {
-        readonly DownloadStation station;
+        private readonly DownloadStation station;
+
         public TaskListTests()
         {
-            this.station = new DownloadStation(TestConfig.HttpGateway());
+            station = new DownloadStation(TestConfig.HttpGateway());
         }
 
         [Fact]
-        public async void TaskList_ShouldReturnsCurrentTask() 
+        public async void TaskList_ShouldReturnsCurrentTask()
         {
             var auth = await station.Login(TestConfig.Account, TestConfig.Password, DownloadStation.SessionName, "sid");
 

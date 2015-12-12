@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Synology.Api.Http;
 
 namespace Synology.Api.Download
@@ -16,9 +12,10 @@ namespace Synology.Api.Download
         {
         }
 
-        public async Task<TaskListResponse> ListTasks(Sid sid, int offset = 0, int limit = -1, params string[] additionals)
+        public async Task<TaskListResponse> ListTasks(Sid sid, int offset = 0, int limit = -1,
+            params string[] additionals)
         {
-            var result = await this.SendRequest("SYNO.DownloadStation.Task", "list",
+            var result = await SendRequest("SYNO.DownloadStation.Task", "list",
                 new Parameter("offset", offset),
                 new Parameter("limit", limit),
                 new Parameter("_sid", sid.Value),
@@ -30,7 +27,7 @@ namespace Synology.Api.Download
 
         public async Task<IResponse> CreateTaskUri(Sid sid, string uri, string destination)
         {
-            var result = await this.SendRequest("SYNO.DownloadStation.Task", "create",
+            var result = await SendRequest("SYNO.DownloadStation.Task", "create",
                 new Parameter("uri", uri),
                 new Parameter("destination", destination),
                 new Parameter("_sid", sid.Value));
@@ -40,12 +37,11 @@ namespace Synology.Api.Download
 
         public async Task<IResponse> CreateTaskFile(Sid sid, string filepath, string destination)
         {
-            var result = await this.PostRequest("SYNO.DownloadStation.Task", "create",
+            var result = await PostRequest("SYNO.DownloadStation.Task", "create",
                 new Parameter("destination", destination),
                 new Parameter("_sid", sid.Value),
                 new Parameter("file", filepath));
             return result;
         }
-
     }
 }

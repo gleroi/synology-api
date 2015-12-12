@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 
 namespace Synology.Api.Download
@@ -14,7 +12,6 @@ namespace Synology.Api.Download
 
         internal TaskList()
         {
-
         }
 
         internal static TaskList Create(IDictionary<string, JToken> data)
